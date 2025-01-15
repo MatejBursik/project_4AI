@@ -4,10 +4,13 @@ import cv2
 # https://core-electronics.com.au/guides/raspberry-pi/getting-started-with-yolo-object-and-animal-recognition-on-the-raspberry-pi/
 
 # Load the YOLOv11 model
-model = YOLO("YOLO_model\\yolo11n.pt")
+model = YOLO("YOLO_model\\first_model.onnx")
 
-path = 0 # path for camera = 0, path for video = "app_test_data\\People_Walking_Stock_Footage.mp4"
+path = "app_test_data\\full.mp4" # path for camera = 0, path for video = "app_test_data\\People_Walking_Stock_Footage.mp4"
 cap = cv2.VideoCapture(path)
+
+# Save as video
+frames = []
 
 while True:
     # Capture frame-by-frame
@@ -34,10 +37,20 @@ while True:
 
     # Show the frame with the annotations
     cv2.imshow('YOLOv11 Tracking', annotated_frame)
+    frames.append(annotated_frame)
 
     # Press 'q' to stop
     if cv2.waitKey(1) == ord('q'):
         break
 
+height, width, layers = frames[0].shape
+fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # Use 'mp4v' for MP4 output
+video_writer = cv2.VideoWriter("output_video.mp4", fourcc, 30, (width, height))
+
+for f in frames:
+    video_writer.write(f)
+    
+# Release the VideoWriter
+video_writer.release()
 cap.release()
 cv2.destroyAllWindows()

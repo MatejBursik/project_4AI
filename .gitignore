@@ -1,4 +1,5 @@
 /venv
 /YOLO_model/venv
-/runs
 /app_test_data
+runs/detect/*
+!runs/detect/train14/

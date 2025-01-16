@@ -4,9 +4,9 @@ import cv2
 # https://core-electronics.com.au/guides/raspberry-pi/getting-started-with-yolo-object-and-animal-recognition-on-the-raspberry-pi/
 
 # Load the YOLOv11 model
-model = YOLO("YOLO_model\\first_model.onnx")
+model = YOLO("YOLO_model/first_model.onnx")
 
-path = "app_test_data\\full.mp4" # path for camera = 0, path for video = "app_test_data\\People_Walking_Stock_Footage.mp4"
+path = "app_test_data/full.mp4" # path for camera = 0, path for video = "app_test_data\\People_Walking_Stock_Footage.mp4"
 cap = cv2.VideoCapture(path)
 
 # Save as video

@@ -1,5 +1,6 @@
 /venv
 /YOLO_model/venv
-/app_test_data
+app_test_data/*
+!app_test_data/full.mp4
 runs/detect/*
 !runs/detect/train14/

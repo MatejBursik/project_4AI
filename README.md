@@ -2,6 +2,7 @@
 
 ## Download requirements
 1) Install Python v3.11.5
+2) In the terminal, run the command: `apt-get install python3-venv`
 2) In the terminal, run the command: `python3.11 -m venv venv`
 3) In the terminal, run the command: `source venv/bin/activate`
 4) In the terminal, run the command: `pip install -r requirements.txt`

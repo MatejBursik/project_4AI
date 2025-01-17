@@ -1,7 +1,33 @@
 from ultralytics import YOLO
-import cv2
+import cv2, requests, time
 
 # https://core-electronics.com.au/guides/raspberry-pi/getting-started-with-yolo-object-and-animal-recognition-on-the-raspberry-pi/
+
+def run_request(run):
+    url = "http://127.0.0.1:5500/updateRun"
+
+    # Create the data payload
+    data = {
+        "run": run
+    }
+
+    # Send the POST request
+    try:
+        response = requests.post(url, json=data)
+
+        # Check for successful response
+        if response.status_code == 200:
+            print("Response from API:", response.json())
+        else:
+            print(f"Error: {response.status_code}, {response.text}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Test api communcation from the container to localhost
+run_request(True)
+time.sleep(5)
+run_request(False)
 
 # Load the YOLOv11 model
 model = YOLO("YOLO_model/first_model.onnx")

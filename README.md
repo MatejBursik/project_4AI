@@ -1,12 +1,21 @@
 # Project 4.0 AI part
 
 ## Download requirements
-1) Install Python v3.11.5
-2) In the terminal, run the command: `apt-get install python3-venv`
-2) In the terminal, run the command: `python3.11 -m venv venv`
-3) In the terminal, run the command: `source venv/bin/activate`
-4) In the terminal, run the command: `pip install -r requirements.txt`
-5) In the terminal, run the command: `python3 main.py`
+1) Install Docker
+2) `docker build -t hornet_detection:latest .`
+3) `docker run -it -d --name hornet_detection:latest`
+4) Install wiringpi
+    - `git clone https://github.com/orangepi-xunlong/wiringOP`
+    - `cd wiringOP`
+    - `sudo ./build clean`
+    - `sudo ./build`
+5) `sudo python3 relay.py`
+
+- `apt-get install python3-venv`
+- `python3.11 -m venv venv`
+- `source venv/bin/activate`
+- `pip install -r requirements.txt`
+- `python3.11 main.py`
 
 ## Application testing data
 Videos used for testing tracking of the application:

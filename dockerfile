@@ -15,7 +15,7 @@ COPY app_test_data/full.mp4 app_test_data/
 
 # Install Python dependencies, including YOLOv5 Ultralytics
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install -r requirements_con.txt
 
 # Set the command to run your YOLO script
 CMD ["python", "main.py"]

@@ -25,14 +25,14 @@ def run_request(run):
         print(f"An error occurred: {e}")
 
 # Test api communcation from the container to localhost
-run_request(True)
-time.sleep(5)
-run_request(False)
+#run_request(True)
+#time.sleep(5)
+#run_request(False)
 
 # Load the YOLOv11 model
 model = YOLO("YOLO_model/first_model.onnx")
 
-path = "app_test_data/full.mp4" # path for camera = 0, path for video = "app_test_data\\People_Walking_Stock_Footage.mp4"
+path = "app_test_data/Untitled.mp4" # path for camera = 0, path for video = "app_test_data\\People_Walking_Stock_Footage.mp4"
 cap = cv2.VideoCapture(path)
 
 # Save as video
@@ -52,11 +52,12 @@ while True:
     annotated_frame = result[0].orig_img
     if result[0].boxes.id != None:
         for i, id in enumerate(result[0].boxes.id):
-            x1, y1, x2, y2 = result[0].boxes.xyxy[i]
-            label = f"{int(id)} {result[0].names[int(result[0].boxes.cls[i])]}: {float(result[0].boxes.conf[0]):.3f}"
-            color = (0, 0, 255)
-            cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), color, 2)
-            cv2.putText(frame, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+            if float(result[0].boxes.conf[0]) > 0.5:
+                x1, y1, x2, y2 = result[0].boxes.xyxy[i]
+                label = f"{int(id)} {result[0].names[int(result[0].boxes.cls[i])]}: {float(result[0].boxes.conf[0]):.3f}"
+                color = (0, 0, 255)
+                cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), color, 2)
+                cv2.putText(frame, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
     else:
         print("no boxes")
 
@@ -69,6 +70,7 @@ while True:
     if cv2.waitKey(1) == ord('q'):
         break
 
+"""
 height, width, layers = frames[0].shape
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # Use 'mp4v' for MP4 output
 video_writer = cv2.VideoWriter("output_video.mp4", fourcc, 30, (width, height))
@@ -78,5 +80,6 @@ for f in frames:
     
 # Release the VideoWriter
 video_writer.release()
+"""
 cap.release()
 cv2.destroyAllWindows()

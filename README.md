@@ -9,7 +9,7 @@
     - `python3 generate-bindings.py > bindings.i`
     - `sudo python3 setup.py install`
 3) Install Docker
-    - curl -L get.docker.com | sh
+    - `curl -L get.docker.com | sh`
     - `sudo usermod -aG docker $USER`
     - `newgrp docker`
     - `docker run hello-world`

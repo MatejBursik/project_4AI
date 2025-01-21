@@ -3,8 +3,8 @@ FROM python:3.11.5-slim
 
 # Update the image
 RUN apt update && apt upgrade -y
-RUN apt libglib2.0-0 -y
-RUN apt libgl1 -y
+RUN apt install libglib2.0-0 -y
+RUN apt install libgl1 -y
 
 # Set the working directory in the container
 WORKDIR /app

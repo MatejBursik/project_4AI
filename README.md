@@ -15,7 +15,7 @@
     - `docker run hello-world`
     - `docker stop hello-world`
 4) `docker pull jorikgoris/project40-ai:testing-53cb65fc`
-5) `docker run -it -d --rm jorikgoris/project40-ai:testing-53cb65fc`
+5) `docker run -it -d --rm -p 5500:5500 jorikgoris/project40-ai:testing-53cb65fc`
 6) `sudo pip install -r requirements_hard.txt`
 7) `sudo python3 relay.py`
 

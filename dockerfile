@@ -19,5 +19,7 @@ COPY app_test_data/full.mp4 app_test_data/
 RUN pip install --upgrade pip
 RUN pip install -r requirements_con.txt
 
+EXPOSE 5500:5500
+
 # Set the command to run your YOLO script
 CMD ["python", "main.py"]

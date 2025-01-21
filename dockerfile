@@ -10,7 +10,7 @@ RUN apt install libgl1 -y
 WORKDIR /app
 
 # Copy all necessery files
-COPY requirements.txt .
+COPY requirements_con.txt .
 COPY YOLO_model/first_model.onnx YOLO_model/
 COPY main.py .
 COPY app_test_data/full.mp4 app_test_data/

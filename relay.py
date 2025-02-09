@@ -11,7 +11,7 @@ wiringpi.pinMode(alarmLight, 1)
 wiringpi.pinMode(alarmPower, 1)
 wiringpi.pinMode(buttonPin, 0)
 wiringpi.digitalWrite(alarmPower, 0)
-run = True
+run = False
 hard = False
 
 # To turn off/on the killing device by AI
@@ -20,12 +20,15 @@ def updateRun():
     global run
     try:
         run = request.get_json()['run']
-    except:
-        print(Exception)
+        return {"status": "success"}, 200
+    except Exception as e:
+        print("Error:", e)
+        return {"status": "error", "message": str(e)}, 400
 
 # Thread to run the Flask app
 def flask_thread():
-    app.run(host="127.0.0.1", port=5500, debug=True)    
+    # Run without debug in a separate thread
+    app.run(host="0.0.0.0", port=5500, debug=False)
 
 flask_t = threading.Thread(target=flask_thread, daemon=True)
 flask_t.start()
@@ -35,18 +38,21 @@ try:
         # Check button state
         if wiringpi.digitalRead(buttonPin) == 0:
             hard = not hard
-            print("button")
+            print("Button pressed")
             time.sleep(1) # Anti-bouncing delay
 
         # Control the alarm light
-        if run and hard:
-            wiringpi.digitalWrite(alarmLight, 1)
-            print("ON")
+        if hard:
+            if run:
+                wiringpi.digitalWrite(alarmLight, 1)
+                print("ON AI")
+            else:
+                wiringpi.digitalWrite(alarmLight, 0)
+                print("OFF AI")
         else:
-            wiringpi.digitalWrite(alarmLight, 0)
-            print("OFF")
+            print("OFF Button")
 
-        time.sleep(0.2)  # Anti-bouncing delay
+        time.sleep(0.2) # Anti-bouncing delay
 except KeyboardInterrupt:
     wiringpi.digitalWrite(alarmPower, 1)
     print("End")

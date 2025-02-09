@@ -15,7 +15,7 @@
     - `docker run hello-world`
     - `docker stop hello-world`
 4) `docker pull jorikgoris/project40-ai:testing-53cb65fc`
-5) `docker run -it -d --rm -p 5500:5500 jorikgoris/project40-ai:testing-53cb65fc`
+5) `docker run -it --rm --name project40-ai jorikgoris/project40-ai:IMAGE /bin/bash`
 6) `sudo pip install -r requirements_hard.txt`
 7) `sudo python3 relay.py`
 
@@ -23,3 +23,6 @@
 Videos used for testing tracking of the application:
 - [Cars_Moving_Stock_Footage.mp4](https://www.youtube.com/watch?v=Y1jTEyb3wiI)
 - [People_Walking_Stock_Footage.mp4](https://www.youtube.com/watch?v=Y1jTEyb3wiI)
+
+## Development
+- [cuda cores](https://pytorch.org/get-started/locally/) = `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`

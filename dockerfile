@@ -1,5 +1,6 @@
 # Use an official Python 3.11.5 base image
-FROM python:3.11.5-slim
+# FROM python:3.11.5-slim
+FROM --platform=linux/arm64 python:3.11.5-slim
 
 # Update the image
 RUN apt update && apt upgrade -y

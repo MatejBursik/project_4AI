@@ -13,7 +13,7 @@ from functions import *
 # Load the YOLOv11 model
 model = YOLO("YOLO_model/first_model.onnx")
 
-path = "test_data/cropped.mp4" # path for camera = 0, path for video = "test_data/video.mp4"
+path = "test_data/color_test_3.mp4" # path for camera = 0, path for video = "test_data/video.mp4"
 cap = cv2.VideoCapture(path)
 
 # Save as video
@@ -35,17 +35,19 @@ while True:
         for i, id in enumerate(result[0].boxes.id):
             if float(result[0].boxes.conf[0]) > 0.5:
                 x1, y1, x2, y2 = result[0].boxes.xyxy[i]
+                crop = frame[int(y1):int(y2), int(x1):int(x2)] # Crop out everything except the hornet
+                extracted_color = identify_color(crop, "pink")
                 # Drawing funcitons
                 #frame = draw_circle(x1, y1, x2, y2, frame, (180, 105, 255))
-                #label = f"{int(id)} {result[0].names[int(result[0].boxes.cls[i])]}: {float(result[0].boxes.conf[0]):.3f}"
-                #frame = draw_rect_with_label(x1, y1, x2, y2, frame, label)
+                label = f"{int(id)} {result[0].names[int(result[0].boxes.cls[i])]}: {float(result[0].boxes.conf[0]):.3f}"
+                frame = draw_rect_with_label(x1, y1, x2, y2, frame, label, extracted_color)
     else:
         print("no boxes")
 
 
     # Show the frame with the annotations
-    cv2.imshow('YOLOv11 Tracking', annotated_frame) # comment out for deployment
-    frames.append(annotated_frame)
+    cv2.imshow('YOLOv11 Tracking', frame) # comment out for deployment
+    frames.append(frame)
 
     # Press 'q' to stop
     if cv2.waitKey(1) == ord('q'):

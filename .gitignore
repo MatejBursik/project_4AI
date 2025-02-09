@@ -6,4 +6,6 @@ app_test_data/*
 runs/detect/*
 !runs/detect/train14/
 
-/datasets
+datasets/*
+!datasets/main.py
+!datasets/vid_to_img.py

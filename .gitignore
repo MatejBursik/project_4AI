@@ -1,7 +1,11 @@
 /venv
+/__pycache__
 
-app_test_data/*
-!app_test_data/full.mp4
+test_data/*
+!test_data/cropped.mp4
+!test_data/color_test_1.mp4
+!test_data/color_test_2.mp4
+!test_data/color_test_3.mp4
 
 runs/detect/*
 !runs/detect/train14/

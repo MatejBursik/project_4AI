@@ -3,13 +3,6 @@ import cv2
 
 from functions import *
 
-# https://core-electronics.com.au/guides/raspberry-pi/getting-started-with-yolo-object-and-animal-recognition-on-the-raspberry-pi/
-
-# Test api communcation from the container to localhost
-#run_request(True)
-#time.sleep(5)
-#run_request(False)
-
 # Load the YOLOv11 model
 model = YOLO("YOLO_model/first_model.onnx")
 

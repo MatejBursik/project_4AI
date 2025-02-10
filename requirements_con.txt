@@ -69,3 +69,6 @@ ultralytics==8.3.61
 ultralytics-thop==2.0.13
 urllib3==2.3.0
 wcwidth==0.2.13
+joblib==1.4.2
+scikit-learn==1.6.1
+threadpoolctl==3.5.0

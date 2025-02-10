@@ -1,4 +1,5 @@
 import requests, cv2, numpy as np
+from sklearn.linear_model import LinearRegression
 
 def run_request(run):
     url = "http://192.168.137.2:5500/updateRun"
@@ -37,11 +38,12 @@ def identify_color(image):
     count = 0
     color = "black"
     for find in ["red", "blue", "pink"]:
-        # TODO:
-        # - fix blue mask (it is too dark and starts picking up black)
+        # Issues with blue mask:
+        # it is too dark and starts picking up black
         # solutions:
         # - adjust saturation and value
-        # - switch blue for another color since this is a inherite issues with less vibrant colors
+        # - switch blue for another color since this is a inherite issue
+        # with less vibrant colors
         match find:
             # Define the range for color in HSV and create mask
             case "red":
@@ -75,6 +77,45 @@ def identify_color(image):
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     color_pixels = cv2.bitwise_and(rgb_image, rgb_image, mask=color_mask)
-    mean_rgb = cv2.mean(color_pixels, mask=color_mask)[:3] # Extract (R, G, B)
+    mean_rgb = cv2.mean(color_pixels, mask=color_mask)[:3] # Extract RGB
     
     return mean_rgb, color
+
+def enter_exit_calc(coord_1, coord_2, coord_3):
+    X = np.array([coord_1[0], coord_2[0], coord_3[0]]).reshape(-1, 1)
+    Y = np.array([coord_1[1], coord_2[1], coord_3[1]])
+
+    # Train model
+    model = LinearRegression()
+    model.fit(X, Y)
+
+    m = model.coef_[0] # Slope of the best-fit line
+    screen_m = 0 # Horizontal slope of the screen
+    print("m ",m)
+
+    # Check for perpendicular lines
+    if (m * screen_m) == -1:
+        angle = 90.0
+    else:
+        # Compute the angle in radians
+        angle_radians = np.arctan(abs((m - screen_m) / (1 + m * screen_m)))
+        angle = np.degrees(angle_radians)
+
+    # Return angle relative to the screen north
+    if m < 0:
+        return angle + 90
+    elif m > 0:
+        return abs(angle - 90)
+    else:
+        # If the fligh path is perfectly horizontal or vertical
+        # the magnitude/slope is 0 and can not determine which it is
+        # so it needs to be determined by the points. If all X values
+        # are the same then it is perfectly vertical and if all Y values
+        # are the same then it is perfectly horizontal.
+        if all(i == X[0] for i in X):
+            return 0
+        elif all(i == Y[0] for i in Y):
+            return 90
+        
+        return -1
+    

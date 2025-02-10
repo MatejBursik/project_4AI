@@ -13,7 +13,7 @@ from functions import *
 # Load the YOLOv11 model
 model = YOLO("YOLO_model/first_model.onnx")
 
-path = "test_data/color_test_3.mp4" # path for camera = 0, path for video = "test_data/video.mp4"
+path = "test_data/color_test_1.mp4" # path for camera = 0, path for video = "test_data/video.mp4"
 cap = cv2.VideoCapture(path)
 
 # Save as video
@@ -36,10 +36,10 @@ while True:
             if float(result[0].boxes.conf[0]) > 0.5:
                 x1, y1, x2, y2 = result[0].boxes.xyxy[i]
                 crop = frame[int(y1):int(y2), int(x1):int(x2)] # Crop out everything except the hornet
-                extracted_color = identify_color(crop, "pink")
+                extracted_color, clr_text = identify_color(crop)
                 # Drawing funcitons
                 #frame = draw_circle(x1, y1, x2, y2, frame, (180, 105, 255))
-                label = f"{int(id)} {result[0].names[int(result[0].boxes.cls[i])]}: {float(result[0].boxes.conf[0]):.3f}"
+                label = f"{int(id)} {result[0].names[int(result[0].boxes.cls[i])]}: {float(result[0].boxes.conf[0]):.3f} {clr_text}"
                 frame = draw_rect_with_label(x1, y1, x2, y2, frame, label, extracted_color)
     else:
         print("no boxes")

@@ -6,7 +6,7 @@ from functions import *
 # Load the YOLOv11 model
 model = YOLO("YOLO_model/first_model.onnx")
 
-path = "test_data/color_test_3.mp4" # path for camera = 0, path for video = "test_data/video.mp4"
+path = "test_data/cropped.mp4" # path for camera = 0, path for video = "test_data/video.mp4"
 cap = cv2.VideoCapture(path)
 
 # Save as video
@@ -50,8 +50,6 @@ while True:
                     hornet_values["color"].append([])
 
                 # add coords (.append() adds to the back of the list)
-                print(result[0].boxes.xyxy[i]) # debug
-                print(x1, y1, x2, y2, midpoint(int(x1), int(y1), int(x2), int(y2))) # debug
                 hornet_values["coordinates"][int(id)-1].append(midpoint(int(x1), int(y1), int(x2), int(y2)))
                 hornet_values["color"][int(id)-1].append(clr_text)
 
@@ -76,7 +74,6 @@ while True:
 
                 # If there are 3 coordinates, calculate the angle
                 case 3:
-                    print(hornet_values["color"][h_id-1]) # debug
                     screen_angle = enter_exit_calc(
                         hornet_values["coordinates"][h_id-1][2],
                         hornet_values["coordinates"][h_id-1][1],
@@ -85,24 +82,22 @@ while True:
                     if screen_angle == -1:
                         print("Error")
                     else:
-                        print(f"Angle relative to screen: {screen_angle:.2f} degrees")
-                        print(f"Is the hornnet exiting or entering: {hornet_values['enter_or_exit'][h_id-1]}")
+                        # TODO: Make a API post to the application server
+                        print(most_frequent_color(hornet_values["color"][h_id-1])) # debug
+                        print(f"Angle relative to screen: {screen_angle:.2f} degrees") # debug
+                        print(f"Is the hornnet exiting or entering: {hornet_values['enter_or_exit'][h_id-1]}") # debug
 
                         # Switch enter for exit
                         if hornet_values["enter_or_exit"][h_id-1] == 'enter':
                             hornet_values["enter_or_exit"][h_id-1] = 'exit'
                         elif hornet_values["enter_or_exit"][h_id-1] == 'exit':
                             hornet_values["enter_or_exit"][h_id-1] = 'enter'
-
-                        # TODO: Make a API post to the application server
                 
                 # If there is more than 5 coordinates, DELETE its oldest coordinates
                 case 6:
                     # delete coords (.pop(0) deletes to the front of the list)
                     hornet_values["coordinates"][h_id-1].pop(0)
                     hornet_values["color"][h_id-1].pop(0)
-                    #print(hornet_values["coordinates"][h_id-1]) # debug
-                    #print(hornet_values["color"][h_id-1]) # debug
     else:
         print("no boxes")
         for h_id in hornet_values["id"]:

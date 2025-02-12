@@ -91,14 +91,14 @@ def direction(X, Y):
     ud = "" # Up or Down
 
     if Y[0] > Y[-1]: # Slope negative
-        if X[0] > X[-1]: # Right TODO:wrong
+        if X[0] > X[-1]: # Right
             lr = "r"
             ud = "d"
         elif X[0] < X[-1]: # Left
             lr = "l"
             ud = "d"
     elif Y[0] < Y[-1]: # Slope positive
-        if X[0] > X[-1]: # Right TODO:wrong
+        if X[0] > X[-1]: # Right
             lr = "r"
             ud = "u"
         elif X[0] < X[-1]: # Left
@@ -172,3 +172,13 @@ def enter_exit_calc(coord_1, coord_2, coord_3):
 
     # Return angle relative to the screen north
     return angle
+
+def most_frequent_color(words):
+    if not words:
+        return None
+    
+    # Count occurrences using dictionary comprehension
+    word_counts = {word: words.count(word) for word in set(words)}
+    
+    # Find the word with the maximum count
+    return max(word_counts, key=word_counts.get)

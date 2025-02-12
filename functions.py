@@ -86,24 +86,24 @@ def midpoint(x1, y1, x2, y2):
     y_mid = (y1 + y2) / 2
     return (x_mid, y_mid)
 
-def direction(X, Y, m):
+def direction(X, Y):
     lr = "" # Left or Right
     ud = "" # Up or Down
 
-    if m < 0: # Slope negative
+    if Y[0] > Y[-1]: # Slope negative
         if X[0] > X[-1]: # Right TODO:wrong
             lr = "r"
             ud = "d"
         elif X[0] < X[-1]: # Left
             lr = "l"
-            ud = "u"
-    elif m > 0: # Slope positive
+            ud = "d"
+    elif Y[0] < Y[-1]: # Slope positive
         if X[0] > X[-1]: # Right TODO:wrong
             lr = "r"
             ud = "u"
         elif X[0] < X[-1]: # Left
             lr = "l"
-            ud = "d"
+            ud = "u"
     else:
         # If the fligh path is perfectly horizontal or vertical
         # the magnitude/slope is 0 and can not determine which it is
@@ -148,7 +148,7 @@ def enter_exit_calc(coord_1, coord_2, coord_3):
         angle_radians = np.arctan(abs((m - screen_m) / (1 + m * screen_m)))
         angle = np.degrees(angle_radians)
 
-    vec_direction = direction(X, Y, m)
+    vec_direction = direction(X, Y)
     print(vec_direction)
     match vec_direction:
         case 'rd':
@@ -168,7 +168,7 @@ def enter_exit_calc(coord_1, coord_2, coord_3):
         case 'pu':
             angle = 0
         case -1 | '' | _:
-            return -1        
+            return -1   
 
     # Return angle relative to the screen north
     return angle

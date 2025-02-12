@@ -78,9 +78,9 @@ while True:
                 case 3:
                     print(hornet_values["color"][h_id-1]) # debug
                     screen_angle = enter_exit_calc(
-                        hornet_values["coordinates"][h_id-1][0],
+                        hornet_values["coordinates"][h_id-1][2],
                         hornet_values["coordinates"][h_id-1][1],
-                        hornet_values["coordinates"][h_id-1][2]
+                        hornet_values["coordinates"][h_id-1][0]
                     )
                     if screen_angle == -1:
                         print("Error")
@@ -122,7 +122,7 @@ while True:
     # Show the frame with the annotations
     cv2.imshow('YOLOv11 Tracking', frame) # debug
     frames.append(frame) # debug
-    time.sleep(0.5) # debug
+    time.sleep(0.25) # debug
 
     # Press 'q' to stop
     if cv2.waitKey(1) == ord('q'):

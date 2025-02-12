@@ -1,6 +1,9 @@
 /venv
 /__pycache__
 
+.env
+cron_access_token.py
+
 test_data/*
 !test_data/cropped.mp4
 !test_data/color_test_1.mp4

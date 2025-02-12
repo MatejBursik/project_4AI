@@ -1,7 +1,12 @@
 from ultralytics import YOLO
-import cv2, time
+import cv2, time, os
+from dotenv import load_dotenv
 
 from functions import *
+
+load_dotenv(".env")
+token = os.getenv("access_token")
+location_id = "asdfghjkl1"
 
 # Load the YOLOv11 model
 model = YOLO("YOLO_model/first_model.onnx")
@@ -82,10 +87,10 @@ while True:
                     if screen_angle == -1:
                         print("Error")
                     else:
-                        # TODO: Make a API post to the application server
                         print(most_frequent_color(hornet_values["color"][h_id-1])) # debug
                         print(f"Angle relative to screen: {screen_angle:.2f} degrees") # debug
                         print(f"Is the hornnet exiting or entering: {hornet_values['enter_or_exit'][h_id-1]}") # debug
+                        app_send_data(token, location_id, most_frequent_color(hornet_values["color"][h_id-1]), hornet_values['enter_or_exit'][h_id-1], screen_angle )
 
                         # Switch enter for exit
                         if hornet_values["enter_or_exit"][h_id-1] == 'enter':

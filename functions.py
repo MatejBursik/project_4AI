@@ -1,5 +1,30 @@
-import requests, cv2, numpy as np
+import requests, cv2, numpy as np, http.client, json, time
 from sklearn.linear_model import LinearRegression
+
+def app_send_data(token, loc_id, color, enter_or_exit, angle):
+    conn = http.client.HTTPConnection("path_to_your_api")
+    
+    headers = {
+        'Authorization': token,
+        'Content-Type': "application/json"
+    }
+    
+    body = json.dumps({
+        "direction": angle,
+        "time": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "locationId": loc_id,
+        "isMarked": False if color == 'black' else True,
+        "color": color,
+        "isIncoming": True if enter_or_exit == 'enter' else False,
+        "isManual": False
+    })
+    
+    conn.request("POST", "/", body=body, headers=headers)
+    
+    res = conn.getresponse()
+    data = res.read()
+    
+    print(data.decode("utf-8"))
 
 def run_request(run):
     url = "http://192.168.137.2:5500/updateRun"

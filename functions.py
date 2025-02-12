@@ -81,13 +81,60 @@ def identify_color(image):
     
     return mean_rgb, color
 
+def midpoint(x1, y1, x2, y2):
+    x_mid = (x1 + x2) / 2
+    y_mid = (y1 + y2) / 2
+    return (x_mid, y_mid)
+
+def direction(X, Y, m):
+    lr = "" # Left or Right
+    ud = "" # Up or Down
+
+    if m < 0: # Slope negative
+        if X[0] > X[-1]: # Right TODO:wrong
+            lr = "r"
+            ud = "d"
+        elif X[0] < X[-1]: # Left
+            lr = "l"
+            ud = "u"
+    elif m > 0: # Slope positive
+        if X[0] > X[-1]: # Right TODO:wrong
+            lr = "r"
+            ud = "u"
+        elif X[0] < X[-1]: # Left
+            lr = "l"
+            ud = "d"
+    else:
+        # If the fligh path is perfectly horizontal or vertical
+        # the magnitude/slope is 0 and can not determine which it is
+        # so it needs to be determined by the points. If all X values
+        # are the same then it is perfectly vertical and if all Y values
+        # are the same then it is perfectly horizontal.
+        # If they are perfectly vertical or horizontal, they equal to p
+        if all(i == X[0] for i in X): # all X values are the same = perfectly vertical
+            lr = "p"
+            if Y[0] > Y[-1]: # Down
+                ud = "d"
+            elif Y[0] < Y[-1]: # Up
+                ud = "u"
+        elif all(i == Y[0] for i in Y): # all Y values are the same = perfectly horizontal
+            ud = "p"
+            if X[0] > X[-1]: # Right
+                lr = "r"
+            elif X[0] < X[-1]: # Left
+                lr = "l"
+        else:
+            return -1
+        
+    return lr + ud
+
 def enter_exit_calc(coord_1, coord_2, coord_3):
-    X = np.array([coord_1[0], coord_2[0], coord_3[0]]).reshape(-1, 1)
+    X = np.array([coord_1[0], coord_2[0], coord_3[0]])
     Y = np.array([coord_1[1], coord_2[1], coord_3[1]])
 
     # Train model
     model = LinearRegression()
-    model.fit(X, Y)
+    model.fit(X.reshape(-1, 1), Y)
 
     m = model.coef_[0] # Slope of the best-fit line
     screen_m = 0 # Horizontal slope of the screen
@@ -101,21 +148,27 @@ def enter_exit_calc(coord_1, coord_2, coord_3):
         angle_radians = np.arctan(abs((m - screen_m) / (1 + m * screen_m)))
         angle = np.degrees(angle_radians)
 
+    vec_direction = direction(X, Y, m)
+    print(vec_direction)
+    match vec_direction:
+        case 'rd':
+            angle = 90 + angle
+        case 'ru':
+            angle = abs(angle - 90)
+        case 'rp':
+            angle = 90
+        case 'ld':
+            angle = 270 - angle
+        case 'lu':
+            angle = 270 + angle
+        case 'lp':
+            angle = 270
+        case 'pd':
+            angle = 180
+        case 'pu':
+            angle = 0
+        case -1 | '' | _:
+            return -1        
+
     # Return angle relative to the screen north
-    if m < 0:
-        return angle + 90
-    elif m > 0:
-        return abs(angle - 90)
-    else:
-        # If the fligh path is perfectly horizontal or vertical
-        # the magnitude/slope is 0 and can not determine which it is
-        # so it needs to be determined by the points. If all X values
-        # are the same then it is perfectly vertical and if all Y values
-        # are the same then it is perfectly horizontal.
-        if all(i == X[0] for i in X):
-            return 0
-        elif all(i == Y[0] for i in Y):
-            return 90
-        
-        return -1
-    
+    return angle

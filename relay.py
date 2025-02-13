@@ -14,6 +14,9 @@ wiringpi.digitalWrite(alarmPower, 0)
 run = False
 hard = False
 
+prev_hard = None
+prev_run = None
+
 # To turn off/on the killing device by AI
 @app.route("/updateRun", methods=['POST'])
 def updateRun():
@@ -42,15 +45,20 @@ try:
             time.sleep(1) # Anti-bouncing delay
 
         # Control the alarm light
-        if hard:
-            if run:
-                wiringpi.digitalWrite(alarmLight, 1)
-                print("ON AI")
+        if hard != prev_hard or run != prev_run:
+            if hard:
+                if run:
+                    wiringpi.digitalWrite(alarmLight, 1)
+                    print("ON AI")
+                else:
+                    wiringpi.digitalWrite(alarmLight, 0)
+                    print("OFF AI")
             else:
-                wiringpi.digitalWrite(alarmLight, 0)
-                print("OFF AI")
-        else:
-            print("OFF Button")
+                print("OFF Button")
+            
+            # Update previous states
+            prev_hard = hard
+            prev_run = run
 
         time.sleep(0.2) # Anti-bouncing delay
 except KeyboardInterrupt:

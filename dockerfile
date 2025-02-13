@@ -13,8 +13,9 @@ WORKDIR /app
 # Copy all necessery files
 COPY requirements_con.txt .
 COPY YOLO_model/first_model.onnx YOLO_model/
+COPY functions.py .
 COPY main.py .
-COPY app_test_data/full.mp4 app_test_data/
+COPY test_data/cropped.mp4 test_data/
 
 # Install Python dependencies, including YOLOv5 Ultralytics
 RUN pip install --upgrade pip

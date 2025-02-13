@@ -2,7 +2,6 @@
 /__pycache__
 
 .env
-cronjob_access_token.py
 
 test_data/*
 !test_data/cropped.mp4

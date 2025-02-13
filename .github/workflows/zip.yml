@@ -1,0 +1,26 @@
+name: Create Production Zip File
+
+on:
+  push:
+    branches:
+      - main # Trigger on push to main branch
+  workflow_dispatch: # Trigger Manually
+
+jobs:
+  zip-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create Zip Archive
+        run: |
+          mkdir zip_output
+          zip -r zip_output/production.zip dockerfile main.py functions.py relay.py requirements_con.txt requirements_hard.txt cronjob_access_token.py test_data/color_test_1.mp4 YOLO_model/first_model.onnx
+
+      - name: Upload ZIP Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: selected-files-zip
+          path: zip_output/production.zip

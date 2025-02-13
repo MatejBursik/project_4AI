@@ -14,10 +14,12 @@
     - `newgrp docker`
     - `docker run hello-world`
     - `docker stop hello-world`
-4) `docker pull jorikgoris/project40-ai:testing-53cb65fc`
-5) `docker run -it --rm --name project40-ai jorikgoris/project40-ai:IMAGE /bin/bash`
-6) `sudo pip install -r requirements_hard.txt`
-7) `sudo python3 relay.py`
+4) Create the .env file
+    - `echo -e "access_token=a\npayload=p" > .env`
+5) `docker pull jorikgoris/project40-ai:testing-53cb65fc`
+6) `docker run -it --rm --name project40-ai jorikgoris/project40-ai:IMAGE /bin/bash`
+7) `sudo pip install -r requirements_hard.txt`
+8) `sudo python3 relay.py`
 
 ## Application testing data
 Videos used for testing tracking of the application:

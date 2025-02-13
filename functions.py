@@ -2,10 +2,10 @@ import requests, cv2, numpy as np, http.client, json, time
 from sklearn.linear_model import LinearRegression
 
 def app_send_data(token, loc_id, color, enter_or_exit, angle):
-    conn = http.client.HTTPConnection("path_to_your_api")
+    conn = http.client.HTTPConnection("192.168.137.3", 8080)
     
     headers = {
-        'Authorization': token,
+        'Authorization': "Bearer " + token,
         'Content-Type': "application/json"
     }
     
@@ -19,12 +19,13 @@ def app_send_data(token, loc_id, color, enter_or_exit, angle):
         "isManual": False
     })
     
-    conn.request("POST", "/", body=body, headers=headers)
-    
-    res = conn.getresponse()
-    data = res.read()
-    
-    print(data.decode("utf-8"))
+    try:
+        conn.request("POST", "/api/log", body=body, headers=headers)
+        response = conn.getresponse()
+        data = response.read()
+        print(f"Response: {response.status}, {data.decode("utf-8")}")
+    except Exception as e:
+        print(f"Error sending data: {e}")
 
 def run_request(run):
     url = "http://192.168.137.2:5500/updateRun"

@@ -1,0 +1,1 @@
+0 0 * * * root python3 cronjob_access_token.py >> /var/log/cronjob.log 2>&1

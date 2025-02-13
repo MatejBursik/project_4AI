@@ -90,7 +90,7 @@ while True:
                         print(most_frequent_color(hornet_values["color"][h_id-1])) # debug
                         print(f"Angle relative to screen: {screen_angle:.2f} degrees") # debug
                         print(f"Is the hornnet exiting or entering: {hornet_values['enter_or_exit'][h_id-1]}") # debug
-                        app_send_data(token, location_id, most_frequent_color(hornet_values["color"][h_id-1]), hornet_values['enter_or_exit'][h_id-1], screen_angle )
+                        app_send_data(token, location_id, most_frequent_color(hornet_values["color"][h_id-1]), hornet_values['enter_or_exit'][h_id-1], screen_angle)
 
                         # Switch enter for exit
                         if hornet_values["enter_or_exit"][h_id-1] == 'enter':

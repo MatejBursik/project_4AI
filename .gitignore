@@ -12,6 +12,8 @@ test_data/*
 
 runs/detect/*
 !runs/detect/train14/
+!runs/detect/tune4/
+!runs/detect/train43/
 
 datasets/*
 !datasets/main.py

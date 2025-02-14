@@ -11,7 +11,7 @@ location_id = "asdfghjkl1"
 # Load the YOLOv11 model
 model = YOLO("YOLO_model/first_model.onnx")
 
-path = "test_data/cropped.mp4" # path for camera = 0, path for video = "test_data/video.mp4"
+path = "test_data/multi_color_test.mp4" # path for camera = 0, path for video = "test_data/video.mp4"
 cap = cv2.VideoCapture(path)
 
 # Save as video
@@ -90,7 +90,7 @@ while True:
                         print(most_frequent_color(hornet_values["color"][h_id-1])) # debug
                         print(f"Angle relative to screen: {screen_angle:.2f} degrees") # debug
                         print(f"Is the hornnet exiting or entering: {hornet_values['enter_or_exit'][h_id-1]}") # debug
-                        app_send_data(token, location_id, most_frequent_color(hornet_values["color"][h_id-1]), hornet_values['enter_or_exit'][h_id-1], screen_angle)
+                        #app_send_data(token, location_id, most_frequent_color(hornet_values["color"][h_id-1]), hornet_values['enter_or_exit'][h_id-1], screen_angle)
 
                         # Switch enter for exit
                         if hornet_values["enter_or_exit"][h_id-1] == 'enter':
@@ -122,7 +122,7 @@ while True:
     # Show the frame with the annotations
     cv2.imshow('YOLOv11 Tracking', frame) # debug
     frames.append(frame) # debug
-    time.sleep(0.25) # debug
+    time.sleep(0.2) # debug
 
     # Press 'q' to stop
     if cv2.waitKey(1) == ord('q'):

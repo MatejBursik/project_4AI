@@ -37,7 +37,7 @@ def app_send_data(token, loc_id, color, enter_or_exit, angle):
         conn.request("POST", "/api/log", body=body, headers=headers)
         response = conn.getresponse()
         data = response.read()
-        print(f"Response: {response.status}, {data.decode("utf-8")}")
+        print("Response:", response.status, data.decode("utf-8"))
     except Exception as e:
         print(f"Error sending data: {e}")
 
@@ -58,7 +58,7 @@ def post_location(token, lon, lat):
         conn.request("POST", "/api/location", body=body, headers=headers)
         response = conn.getresponse()
         data = response.read()
-        print(f"Response: {response.status}, {data.decode("utf-8")}")
+        print("Response:", response.status, data.decode("utf-8"))
 
         parsed_data = json.loads(data.decode("utf-8"))
 
@@ -83,7 +83,7 @@ def run_request(run):
         if response.status_code == 200:
             print("Response from API:", response.json())
         else:
-            print(f"Error: {response.status_code}, {response.text}")
+            print("Response:", response.status, data.decode("utf-8"))
 
     except Exception as e:
         print(f"An error occurred: {e}")

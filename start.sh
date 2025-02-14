@@ -11,6 +11,10 @@ sudo apt update
 echo "Installing required packages..."
 sudo apt-get install -y pip swig python3-dev python3-setuptools
 
+# Install Python requirements
+echo "Installing Python requirements..."
+sudo pip install -r requirements_hard.txt
+
 # Install wiringpi
 echo "Installing WiringOP-Python..."
 git clone --recursive https://github.com/orangepi-xunlong/wiringOP-Python.git
@@ -43,10 +47,6 @@ docker build -t project40-ai:1.0 .
 echo "Running Docker container..."
 #docker run -it --rm --name project40-ai jorikgoris/project40-ai:testing-53cb65fc /bin/bash
 docker run -it --rm --name project40-ai project40-ai:1.0 /bin/bash
-
-# Install Python requirements
-echo "Installing Python requirements..."
-sudo pip install -r requirements_hard.txt
 
 # Run relay script
 echo "Running relay.py..."

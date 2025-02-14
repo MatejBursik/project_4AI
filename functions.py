@@ -1,8 +1,9 @@
-import requests, cv2, numpy as np, http.client, json, time
+import requests, cv2, numpy as np, http.client, json, time, ssl
 from sklearn.linear_model import LinearRegression
 
 def app_send_data(token, loc_id, color, enter_or_exit, angle):
-    conn = http.client.HTTPConnection("192.168.137.3", 8080)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection("192.168.137.3", 8080, context=context)
     
     headers = {
         'Authorization': "Bearer " + token,

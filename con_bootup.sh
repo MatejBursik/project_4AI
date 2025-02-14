@@ -7,4 +7,4 @@ cron &
 sleep 5
 
 # Run the main script
-exec python /app/main.py
+python3 /app/main.py

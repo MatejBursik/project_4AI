@@ -2,7 +2,7 @@ import os, http.client, json
 from dotenv import load_dotenv
 
 def post_location(token, lon, lat):
-    conn = http.client.HTTPConnection("192.168.137.3", 8080)
+    conn = http.client.HTTPSConnection("192.168.137.3", 8080)
     
     headers = {
         'Authorization': "Bearer " + token,

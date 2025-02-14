@@ -1,8 +1,9 @@
-import os, http.client, json
+import os, http.client, json, ssl
 from dotenv import load_dotenv
 
 def post_location(token, lon, lat):
-    conn = http.client.HTTPSConnection("192.168.137.3", 8080)
+    context = ssl._create_unverified_context()
+    conn = http.client.HTTPSConnection("192.168.137.3", 8080, context=context)
     
     headers = {
         'Authorization': "Bearer " + token,

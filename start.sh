@@ -31,8 +31,9 @@ docker stop hello-world
 
 # Create the .env file
 echo "Creating .env file..."
-echo -e "access_token=a\npayload=$PAYLOAD" > .env
+echo -e "access_token=a\npayload=$PAYLOAD\nloc_id=l" > .env
 sudo python3 cronjob_access_token.py
+sudo python3 set_loc_id.py
 
 # Pull Docker image
 # or Build a Docker image

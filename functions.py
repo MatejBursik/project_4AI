@@ -1,6 +1,20 @@
 import requests, cv2, numpy as np, http.client, json, time
 from sklearn.linear_model import LinearRegression
 
+def access_token_request(payload):
+    conn = http.client.HTTPSConnection("dev-bnn5mo4vff0z34au.eu.auth0.com")
+    headers = { 'content-type': "application/json" }
+
+    conn.request("POST", "/oauth/token", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+
+    decoded_data = data.decode("utf-8")
+    parsed_data = json.loads(decoded_data)
+    access_token = parsed_data.get("access_token")
+
+    return access_token
+
 def app_send_data(token, loc_id, color, enter_or_exit, angle):
     conn = http.client.HTTPConnection("192.168.137.3", 8080)
     
@@ -26,6 +40,32 @@ def app_send_data(token, loc_id, color, enter_or_exit, angle):
         print(f"Response: {response.status}, {data.decode("utf-8")}")
     except Exception as e:
         print(f"Error sending data: {e}")
+
+def post_location(token, lon, lat):
+    conn = http.client.HTTPConnection("192.168.137.3", 8080)
+    
+    headers = {
+        'Authorization': "Bearer " + token,
+        'Content-Type': "application/json"
+    }
+    
+    body = json.dumps({
+        "lon": lon, # float
+        "lat": lat # float
+    })
+    
+    try:
+        conn.request("POST", "/api/location", body=body, headers=headers)
+        response = conn.getresponse()
+        data = response.read()
+        print(f"Response: {response.status}, {data.decode("utf-8")}")
+
+        parsed_data = json.loads(data.decode("utf-8"))
+
+        return parsed_data['locationId']
+    except Exception as e:
+        print(f"Error sending data: {e}")
+        return None
 
 def run_request(run):
     url = "http://192.168.137.2:5500/updateRun"

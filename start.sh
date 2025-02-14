@@ -25,10 +25,6 @@ curl -fsSL get.docker.com | sh
 sudo usermod -aG docker $USER
 newgrp docker
 
-echo "Testing Docker installation..."
-docker run hello-world
-docker stop hello-world
-
 # Create the .env file
 echo "Creating .env file..."
 echo -e "access_token=a\npayload=$PAYLOAD\nloc_id=l" > .env
@@ -38,13 +34,13 @@ sudo python3 set_loc_id.py
 # Pull Docker image
 # or Build a Docker image
 echo "Pulling or Building Docker image..."
-docker pull jorikgoris/project40-ai:testing-53cb65fc
-#docker build -t project40-ai:1.0 .
+#docker pull jorikgoris/project40-ai:testing-53cb65fc
+docker build -t project40-ai:1.0 .
 
 # Run Docker container
 echo "Running Docker container..."
-docker run -it --rm --name project40-ai jorikgoris/project40-ai:testing-53cb65fc /bin/bash
-#docker run -it --rm --name project40-ai project40-ai:1.0 /bin/bash
+#docker run -it --rm --name project40-ai jorikgoris/project40-ai:testing-53cb65fc /bin/bash
+docker run -it --rm --name project40-ai project40-ai:1.0 /bin/bash
 
 # Install Python requirements
 echo "Installing Python requirements..."

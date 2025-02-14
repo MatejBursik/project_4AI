@@ -15,7 +15,7 @@ COPY requirements_con.txt .
 COPY YOLO_model/first_model.onnx YOLO_model/
 COPY functions.py .
 COPY main.py .
-COPY test_data/cropped.mp4 test_data/
+COPY test_data/multi_color_test.mp4 test_data/
 COPY .env .
 COPY cronjob_access_token.py .
 

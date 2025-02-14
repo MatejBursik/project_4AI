@@ -6,7 +6,7 @@ from functions import *
 
 load_dotenv(".env")
 token = os.getenv("access_token")
-location_id = "asdfghjkl1"
+location_id = os.getenv("loc_id")
 
 # Load the YOLOv11 model
 model = YOLO("YOLO_model/first_model.onnx")
@@ -31,11 +31,6 @@ while True:
         break
 
     # Perform tracking on the current frame
-    # TODO: try while training so that it can be implemented for tracking
-    # - obb model
-    # - half (f16)
-    # - imgsz
-    # - look at more settings https://docs.ultralytics.com/modes/train/#train-settings
     result = model.track(frame, conf=0.6, max_det=3, iou=0.8)
     delete_ids = []
 
@@ -90,7 +85,7 @@ while True:
                         print(most_frequent_color(hornet_values["color"][h_id-1])) # debug
                         print(f"Angle relative to screen: {screen_angle:.2f} degrees") # debug
                         print(f"Is the hornnet exiting or entering: {hornet_values['enter_or_exit'][h_id-1]}") # debug
-                        #app_send_data(token, location_id, most_frequent_color(hornet_values["color"][h_id-1]), hornet_values['enter_or_exit'][h_id-1], screen_angle)
+                        app_send_data(token, location_id, most_frequent_color(hornet_values["color"][h_id-1]), hornet_values['enter_or_exit'][h_id-1], screen_angle)
 
                         # Switch enter for exit
                         if hornet_values["enter_or_exit"][h_id-1] == 'enter':
@@ -120,9 +115,9 @@ while True:
     hornet_values["id"] = list(range(1, len(hornet_values["coordinates"]) + 1))
 
     # Show the frame with the annotations
-    cv2.imshow('YOLOv11 Tracking', frame) # debug
+    #cv2.imshow('YOLOv11 Tracking', frame) # debug
     frames.append(frame) # debug
-    time.sleep(0.2) # debug
+    time.sleep(0.1) # debug
 
     # Press 'q' to stop
     if cv2.waitKey(1) == ord('q'):

@@ -204,7 +204,7 @@ def enter_exit_calc(coord_1, coord_2, coord_3):
 
     m = model.coef_[0] # Slope of the best-fit line
     screen_m = 0 # Horizontal slope of the screen
-    print("m ",m)
+    print("m",m)
 
     # Check for perpendicular lines
     if (m * screen_m) == -1:

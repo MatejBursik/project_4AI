@@ -19,17 +19,19 @@ python3 generate-bindings.py > bindings.i
 sudo python3 setup.py install
 cd ..
 
+# Create the .env file
+echo "Creating .env file..."
+echo -e "access_token=a\npayload=$PAYLOAD\nloc_id=l" > .env
+sudo python3 cronjob_access_token.py
+sleep 10
+sudo python3 set_loc_id.py
+sleep 10
+
 # Install Docker
 echo "Installing Docker..."
 curl -fsSL get.docker.com | sh
 sudo usermod -aG docker $USER
 newgrp docker
-
-# Create the .env file
-echo "Creating .env file..."
-echo -e "access_token=a\npayload=$PAYLOAD\nloc_id=l" > .env
-sudo python3 cronjob_access_token.py
-sudo python3 set_loc_id.py
 
 # Pull Docker image
 # or Build a Docker image

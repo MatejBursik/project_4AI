@@ -1,6 +1,31 @@
-from functions import *
-import os
+import os, http.client, json
 from dotenv import load_dotenv
+
+def post_location(token, lon, lat):
+    conn = http.client.HTTPConnection("192.168.137.3", 8080)
+    
+    headers = {
+        'Authorization': "Bearer " + token,
+        'Content-Type': "application/json"
+    }
+    
+    body = json.dumps({
+        "lon": lon, # float
+        "lat": lat # float
+    })
+    
+    try:
+        conn.request("POST", "/api/location", body=body, headers=headers)
+        response = conn.getresponse()
+        data = response.read()
+        print("Response:", response.status, data.decode("utf-8"))
+
+        parsed_data = json.loads(data.decode("utf-8"))
+
+        return parsed_data['locationId']
+    except Exception as e:
+        print(f"Error sending data: {e}")
+        return None
 
 if __name__ == "__main__":
     load_dotenv(".env")

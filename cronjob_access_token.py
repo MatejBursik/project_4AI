@@ -1,6 +1,19 @@
-from functions import *
-import os
+import os, http.client, json
 from dotenv import load_dotenv
+
+def access_token_request(payload):
+    conn = http.client.HTTPSConnection("dev-bnn5mo4vff0z34au.eu.auth0.com")
+    headers = { 'content-type': "application/json" }
+
+    conn.request("POST", "/oauth/token", payload, headers)
+    res = conn.getresponse()
+    data = res.read()
+
+    decoded_data = data.decode("utf-8")
+    parsed_data = json.loads(decoded_data)
+    access_token = parsed_data.get("access_token")
+
+    return access_token
 
 if __name__ == "__main__":
     load_dotenv(".env")

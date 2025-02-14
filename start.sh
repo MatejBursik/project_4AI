@@ -27,9 +27,9 @@ cd ..
 echo "Creating .env file..."
 echo -e "access_token=a\npayload=$PAYLOAD\nloc_id=l" > .env
 sudo python3 cronjob_access_token.py
-sleep 10
+sleep 5
 sudo python3 set_loc_id.py
-sleep 10
+sleep 5
 
 # Install Docker
 echo "Installing Docker..."
@@ -46,7 +46,7 @@ docker build -t project40-ai:1.0 .
 # Run Docker container
 echo "Running Docker container..."
 #docker run -it --rm --name project40-ai jorikgoris/project40-ai:testing-53cb65fc /bin/bash
-docker run -it --rm --name project40-ai project40-ai:1.0 /bin/bash
+docker run -d --rm --name project40-ai project40-ai:1.0
 
 # Run relay script
 echo "Running relay.py..."

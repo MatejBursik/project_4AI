@@ -6,6 +6,7 @@ FROM --platform=linux/arm64 python:3.11.5-slim
 RUN apt update && apt upgrade -y
 RUN apt install libglib2.0-0 -y
 RUN apt install libgl1 -y
+RUN apt install cron -y
 
 # Set the working directory in the container
 WORKDIR /app
@@ -21,6 +22,7 @@ COPY cronjob_access_token.py .
 
 # Cron job
 COPY crontab.txt /etc/cron.d/mycron
+RUN service cron start
 RUN chmod +x /app/cronjob_access_token.py
 RUN chmod 0644 /etc/cron.d/mycron && crontab /etc/cron.d/mycron
 

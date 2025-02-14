@@ -33,6 +33,6 @@ RUN pip install -r requirements_con.txt
 EXPOSE 5500:5500
 
 # Run the startup script
-COPY con_bootup.sh con_bootup.sh
+COPY con_bootup.sh .
 RUN chmod +x con_bootup.sh
-CMD ["con_bootup.sh"]
+CMD ["/app/con_bootup.sh"]

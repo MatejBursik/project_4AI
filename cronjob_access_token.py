@@ -1,6 +1,10 @@
 import os, http.client, json
 from dotenv import load_dotenv
 
+# Used during the start.sh script and ran by Cron once a day
+# It requests the access token from authentication provider so that the application server can trust it
+# It is then saved in a .env file
+
 def access_token_request(payload):
     conn = http.client.HTTPSConnection("dev-bnn5mo4vff0z34au.eu.auth0.com")
     headers = { 'content-type': "application/json" }

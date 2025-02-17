@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # Define variables
-PAYLOAD=""
+PAYLOAD="..."
+# Before running the script, fill in the variable payload in this format:
+# "{\"client_id\":\" ... \",
+# \"client_secret\":\" ... \",
+# \"audience\":\" ... ",
+# \"grant_type\":\"client_credentials\"}"
 
 # Update package list
 echo "Updating package list..."
@@ -23,7 +28,7 @@ python3 generate-bindings.py > bindings.i
 sudo python3 setup.py install
 cd ..
 
-# Create the .env file
+# Create and populating the .env file
 echo "Creating .env file..."
 echo -e "access_token=a\npayload=$PAYLOAD\nloc_id=l" > .env
 sudo python3 cronjob_access_token.py
@@ -36,17 +41,18 @@ echo "Installing Docker..."
 curl -fsSL get.docker.com | sh
 sudo usermod -aG docker $USER
 newgrp docker
+# Use the `exit` command when the test container cli pops up
 
-# Pull Docker image
-# or Build a Docker image
+# Build Docker image
+# or Pull a Docker image
 echo "Pulling or Building Docker image..."
-#docker pull jorikgoris/project40-ai:testing-53cb65fc
 docker build -t project40-ai:1.0 .
+#docker pull name/project40-ai:testing-1
 
 # Run Docker container
 echo "Running Docker container..."
-#docker run -it --rm --name project40-ai jorikgoris/project40-ai:testing-53cb65fc /bin/bash
 docker run -d --rm --name project40-ai project40-ai:1.0
+#docker run -it --rm --name project40-ai name/project40-ai:testing-1 /bin/bash
 
 # Run relay script
 echo "Running relay.py..."

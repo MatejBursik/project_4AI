@@ -38,6 +38,7 @@ while True:
     if result[0].boxes.id != None:
         for i, id in enumerate(result[0].boxes.id):
             if float(result[0].boxes.conf[0]) > 0.6:
+                run_request(True) # Activate the killing mechanism
                 x1, y1, x2, y2 = result[0].boxes.xyxy[i]
                 extracted_color, clr_text = identify_color(frame[int(y1):int(y2), int(x1):int(x2)])
 
@@ -99,6 +100,7 @@ while True:
                     hornet_values["coordinates"][h_id-1].pop(0)
                     hornet_values["color"][h_id-1].pop(0)
     else:
+        run_request(False) # Deactivate the killing mechanism
         print("no boxes")
         for h_id in hornet_values["id"]:
             hornet_values["coordinates"][h_id-1].pop(0)

@@ -1,6 +1,9 @@
 import os, http.client, json, ssl
 from dotenv import load_dotenv
 
+# Used during the start.sh script to request a location ID from the application server
+# It is then saved in a .env file
+
 def post_location(token, lon, lat):
     context = ssl._create_unverified_context()
     conn = http.client.HTTPSConnection("192.168.137.3", 8080, context=context)

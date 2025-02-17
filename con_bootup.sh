@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Start cron in the background
+# Start cron in the background which runs the cronjob_access_token.py
 cron &
 
 # Wait a bit to ensure cron starts

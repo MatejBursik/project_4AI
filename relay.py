@@ -1,6 +1,10 @@
 import wiringpi, time, threading
 from flask import Flask, request
 
+# This file is ran on the Orange pi hardware.
+# It controls the GPIO pins to operate buttons and a relay.
+# The relay is connected to a Asian hornet killing device like an electric harp.
+
 app = Flask(__name__)
 
 alarmLight = 4

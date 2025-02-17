@@ -49,11 +49,6 @@ echo "Pulling or Building Docker image..."
 docker build -t project40-ai:1.0 .
 #docker pull name/project40-ai:testing-1
 
-# Run Docker container
-echo "Running Docker container..."
-docker run -d --rm --name project40-ai project40-ai:1.0
-#docker run -it --rm --name project40-ai name/project40-ai:testing-1 /bin/bash
-
 # Run relay script
 echo "Running relay..."
 sudo python3 button.py

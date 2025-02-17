@@ -16,7 +16,7 @@ WORKDIR /app
 
 # Copy all necessery files for the AI operation
 COPY requirements_con.txt .
-COPY YOLO_model/third_model.onnx YOLO_model/
+COPY YOLO_model/first_model.onnx YOLO_model/
 COPY functions.py .
 COPY main.py .
 COPY test_data/multi_color_test.mp4 test_data/

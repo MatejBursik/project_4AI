@@ -33,13 +33,17 @@ def clone_or_pull_repo():
         subprocess.run(["git", "clone", GIT_REPO, LOCAL_DIR], check=True)
     print("Code is up-to-date.")
 
+    print("Building docker container")
+    subprocess.run(["docker", "build", "-t", "project40-ai:1.0e", "."], check=True)
+
 def start_services():
     """
     Runs the AI docker container and start the relay script.
+    Popen is async.
     """
     print("Running Docker container...")
     subprocess.Popen([
-        "docker", "run", "-d", "--rm", "--name", "project40-ai", "project40-ai:1.0"
+        "docker", "run", "-d", "--rm", "--device=/dev/video1", "--name", "project40-ai", "project40-ai:1.0"
     ])
     print("Docker container started.")
 

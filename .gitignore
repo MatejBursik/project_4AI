@@ -12,6 +12,7 @@ test_data/*
 
 runs/detect/*
 !runs/detect/train14/
+!runs/detect/train15/
 !runs/detect/tune4/
 !runs/detect/train43/
 

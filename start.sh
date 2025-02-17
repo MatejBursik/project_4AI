@@ -55,5 +55,5 @@ docker run -d --rm --name project40-ai project40-ai:1.0
 #docker run -it --rm --name project40-ai name/project40-ai:testing-1 /bin/bash
 
 # Run relay script
-echo "Running relay.py..."
-sudo python3 relay.py
+echo "Running relay..."
+sudo python3 button.py

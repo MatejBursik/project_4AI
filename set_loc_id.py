@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 # It is then saved in a .env file
 
 def post_location(token, lon, lat):
+    """
+    In order to set a location ID, you need an access_token, longitude, and latitude
+    """
     context = ssl._create_unverified_context()
     conn = http.client.HTTPSConnection("192.168.137.3", 8080, context=context)
     
@@ -34,8 +37,8 @@ def post_location(token, lon, lat):
 if __name__ == "__main__":
     load_dotenv(".env")
     token = os.getenv("access_token")
-    lon = 1.23
-    lat = 4.56
+    lon = 4.987
+    lat = 51.159
 
     loc_id = post_location(token, lon, lat)
     print(loc_id)

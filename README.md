@@ -10,7 +10,7 @@ After setting up the hardware, you need to access the cli (Command Line Interfac
 
 Then you reach the cli of the Orange pi, you need to copy all the files provided on the Orange pi. Again, this can be done in multiple ways like using a USB stick to move the files, using SFTP, or uploading the files to a repository and downloading them to the Orange pi.
 
-Using the cli, navigrate to the location of the files nad find a file called ***start.sh***. You active directory in the cli should be set to the location of that file. Open the ***start.sh*** file and edit is based on the instruction in the file. Do NOT forget to save the changes.
+Using the cli, navigrate to the location of the files and find a file called ***start.sh***. You active directory in the cli should be set to the location of that file. Open the ***start.sh*** file and edit is based on the instruction in the file. Do NOT forget to save the changes.
 
 Next, run the ***start.sh*** script by using the command `sudo bash start.sh`. This script is going to automatically set up all the necessery parts and going to start the application that operates the hardware and AI.
 

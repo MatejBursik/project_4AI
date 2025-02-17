@@ -13,7 +13,7 @@ token = os.getenv("access_token")
 location_id = os.getenv("loc_id")
 
 # Load the YOLOv11 model
-model = YOLO("YOLO_model/first_model.onnx")
+model = YOLO("YOLO_model/third_model.onnx")
 
 path = "test_data/multi_color_test.mp4" # path for camera = 0, path for video = "test_data/video.mp4"
 cap = cv2.VideoCapture(path)

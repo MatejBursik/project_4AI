@@ -2,6 +2,10 @@ import requests, cv2, numpy as np, http.client, json, time, ssl
 from sklearn.linear_model import LinearRegression
 
 def app_send_data(token, loc_id, color, enter_or_exit, angle):
+    """
+    This function does a post request to the application server.
+    It sends log data about the Asian hornet sighting.
+    """
     context = ssl._create_unverified_context()
     conn = http.client.HTTPSConnection("192.168.137.3", 8080, context=context)
     
@@ -29,6 +33,9 @@ def app_send_data(token, loc_id, color, enter_or_exit, angle):
         print(f"Error sending data: {e}")
 
 def run_request(run):
+    """
+    This function does a local post request to change the status on the relay (ON/OFF)
+    """
     url = "http://192.168.137.2:5500/updateRun"
 
     # Create the data payload
@@ -50,15 +57,28 @@ def run_request(run):
         print(f"An error occurred: {e}")
 
 def draw_rect_with_label(x1, y1, x2, y2, frame, label, color = (0, 0, 255)):
+    """
+    Draw a rectangle and a label onto a frame.
+    Return the labelled frame
+    """
     cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), color, 2)
     cv2.putText(frame, label, (int(x1), int(y1) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
     return frame
 
 def draw_circle(x1, y1, x2, y2, frame, color = (0, 0, 255)):
+    """
+    Draw a filled in circle onto a frame.
+    Return the labelled frame
+    """
     cv2.circle(frame, (int(x1+((x2-x1)/2)), int(y1+((y2-y1)/2))), 15, color, -1)
     return frame
 
 def identify_color(image):
+    """
+    This function identifies the dominant color in the region out of a preset colors.
+    The preset colors at the moment are "red", "blue", "pink".
+    It returns the mean rgb value of the color and a string representation of the color.
+    """
     # Convert to HSV color space
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
@@ -91,6 +111,7 @@ def identify_color(image):
                 upper = np.array([175, 255, 255])
                 new_mask = cv2.inRange(hsv_image, lower, upper)
 
+        # If the new mask covers more of the image, update the color_mask and color
         new_count = cv2.countNonZero(new_mask)
         if new_count > count:
             color_mask = new_mask
@@ -109,11 +130,20 @@ def identify_color(image):
     return mean_rgb, color
 
 def midpoint(x1, y1, x2, y2):
+    """
+    Calculates the middle point of two point.
+    Returns the coordinate of this point.
+    """
     x_mid = (x1 + x2) / 2
     y_mid = (y1 + y2) / 2
     return (x_mid, y_mid)
 
 def direction(X, Y):
+    """
+    This function determines the motion direction based on the sets of X and Y coordinates.
+    Returns the string representation of the direction.
+    To better understand the return string, follow the comments in the code.
+    """
     lr = "" # Left or Right
     ud = "" # Up or Down
 
@@ -156,6 +186,11 @@ def direction(X, Y):
     return lr + ud
 
 def enter_exit_calc(coord_1, coord_2, coord_3):
+    """
+    Calculates the enter or exit direction relative to the screens north.
+    This is calculated from 3 coordicates provided from the AI predictions over 3 frames.
+    It returns the angle.
+    """
     X = np.array([coord_1[0], coord_2[0], coord_3[0]])
     Y = np.array([coord_1[1], coord_2[1], coord_3[1]])
 
@@ -201,6 +236,9 @@ def enter_exit_calc(coord_1, coord_2, coord_3):
     return angle
 
 def most_frequent_color(words):
+    """
+    Returns the most frequent word (color) from a list of strings.
+    """
     if not words:
         return None
     

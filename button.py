@@ -22,7 +22,7 @@ REQUIREMENTS_FILE = os.path.join(LOCAL_DIR, "requirements_hard.txt")
 
 def clone_or_pull_repo():
     """
-    Checks for updates in the code repository.
+    Checks for updates in the code repository and rebuilds the Docker container.
     """
     # Check if the repository needs to be pulled or cloned
     if os.path.exists(LOCAL_DIR):
@@ -32,9 +32,19 @@ def clone_or_pull_repo():
         print("Cloning GitLab repository...")
         subprocess.run(["git", "clone", GIT_REPO, LOCAL_DIR], check=True)
     print("Code is up-to-date.")
-
-    print("Building docker container")
-    subprocess.run(["docker", "build", "-t", "project40-ai:1.0e", "."], check=True)
+ 
+    # Stop and remove existing Docker container
+    print("Stopping and removing old Docker container...")
+    subprocess.run(["docker", "stop", "project40-ai-container"], check=False)  # Allow failures if container doesn't exist
+    subprocess.run(["docker", "rm", "project40-ai-container"], check=False)  # Allow failures if container doesn't exist
+ 
+    # Remove old Docker image
+    print("Removing old Docker image...")
+    subprocess.run(["docker", "rmi", "-f", "project40-ai:1.0"], check=False)  # Allow failures if image doesn't exist
+ 
+    # Build new Docker image
+    print("Building Docker container...")
+    subprocess.run(["docker", "build", "-t", "project40-ai:1.0", "."], check=True)
 
 def start_services():
     """

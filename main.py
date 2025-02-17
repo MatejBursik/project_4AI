@@ -4,6 +4,10 @@ from dotenv import load_dotenv
 
 from functions import *
 
+# This file is ran in the AI container.
+# It operates the application which uses the AI model.
+# If there are functions that are not commented, you can find more information in the functions.py file.
+
 load_dotenv(".env")
 token = os.getenv("access_token")
 location_id = os.getenv("loc_id")
@@ -15,7 +19,7 @@ path = "test_data/multi_color_test.mp4" # path for camera = 0, path for video = 
 cap = cv2.VideoCapture(path)
 
 # Save as video
-frames = []
+#frames = []
 
 hornet_values = {
     "id": [],
@@ -56,8 +60,8 @@ while True:
 
                 # Drawing funcitons (debug)
                 #frame = draw_circle(x1, y1, x2, y2, frame, (180, 105, 255))
-                label = f"{int(id)} {result[0].names[int(result[0].boxes.cls[i])]}: {float(result[0].boxes.conf[0]):.3f} {clr_text}"
-                frame = draw_rect_with_label(x1, y1, x2, y2, frame, label, extracted_color)
+                #label = f"{int(id)} {result[0].names[int(result[0].boxes.cls[i])]}: {float(result[0].boxes.conf[0]):.3f} {clr_text}"
+                #frame = draw_rect_with_label(x1, y1, x2, y2, frame, label, extracted_color)
 
         for h_id in hornet_values["id"]:
             # If the hornet is not detected, DELETE its oldest coordinates
@@ -66,8 +70,8 @@ while True:
                 hornet_values["coordinates"][h_id-1].pop(0)
                 hornet_values["color"][h_id-1].pop(0)
             
-            print("id:", h_id, ", lenght:", len(hornet_values["coordinates"][h_id-1])) # debug
-            print(hornet_values["coordinates"][h_id-1]) # debug
+            #print("id:", h_id, ", lenght:", len(hornet_values["coordinates"][h_id-1])) # debug
+            #print(hornet_values["coordinates"][h_id-1]) # debug
             match len(hornet_values["coordinates"][h_id-1]):
                 # If there are no coordinates in the list, DELETE the list and the id
                 case 0:
@@ -118,8 +122,8 @@ while True:
 
     # Show the frame with the annotations
     #cv2.imshow('YOLOv11 Tracking', frame) # debug
-    frames.append(frame) # debug
-    time.sleep(0.1) # debug
+    #frames.append(frame) # debug
+    #time.sleep(0.1) # debug
 
     # Press 'q' to stop
     if cv2.waitKey(1) == ord('q'):
@@ -138,4 +142,4 @@ for f in frames:
 video_writer.release()
 """
 cap.release()
-cv2.destroyAllWindows()
+#cv2.destroyAllWindows()

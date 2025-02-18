@@ -15,7 +15,7 @@ location_id = os.getenv("loc_id")
 # Load the YOLOv11 model
 model = YOLO("YOLO_model/first_model.onnx")
 
-path = "/dev/video1" # path for camera = 0, path for video = "test_data/multi_color_test.mp4"
+path = 0 # path for camera = 0, path for video = "test_data/multi_color_test.mp4"
 cap = cv2.VideoCapture(path)
 
 # Save as video
@@ -42,7 +42,7 @@ while True:
     if result[0].boxes.id != None:
         for i, id in enumerate(result[0].boxes.id):
             if float(result[0].boxes.conf[0]) > 0.6:
-                run_request(True) # Activate the killing mechanism
+                #run_request(True) # Activate the killing mechanism
                 x1, y1, x2, y2 = result[0].boxes.xyxy[i]
                 extracted_color, clr_text = identify_color(frame[int(y1):int(y2), int(x1):int(x2)])
 
@@ -60,8 +60,8 @@ while True:
 
                 # Drawing funcitons (debug)
                 #frame = draw_circle(x1, y1, x2, y2, frame, (180, 105, 255))
-                #label = f"{int(id)} {result[0].names[int(result[0].boxes.cls[i])]}: {float(result[0].boxes.conf[0]):.3f} {clr_text}"
-                #frame = draw_rect_with_label(x1, y1, x2, y2, frame, label, extracted_color)
+                label = f"{int(id)} {result[0].names[int(result[0].boxes.cls[i])]}: {float(result[0].boxes.conf[0]):.3f} {clr_text}"
+                frame = draw_rect_with_label(x1, y1, x2, y2, frame, label, extracted_color)
 
         for h_id in hornet_values["id"]:
             # If the hornet is not detected, DELETE its oldest coordinates
@@ -90,7 +90,7 @@ while True:
                         print(most_frequent_color(hornet_values["color"][h_id-1])) # debug
                         print(f"Angle relative to screen: {screen_angle:.2f} degrees") # debug
                         print(f"Is the hornnet exiting or entering: {hornet_values['enter_or_exit'][h_id-1]}") # debug
-                        app_send_data(token, location_id, most_frequent_color(hornet_values["color"][h_id-1]), hornet_values['enter_or_exit'][h_id-1], screen_angle)
+                        #app_send_data(token, location_id, most_frequent_color(hornet_values["color"][h_id-1]), hornet_values['enter_or_exit'][h_id-1], screen_angle)
 
                         # Switch enter for exit
                         if hornet_values["enter_or_exit"][h_id-1] == 'enter':
@@ -104,7 +104,42 @@ while True:
                     hornet_values["coordinates"][h_id-1].pop(0)
                     hornet_values["color"][h_id-1].pop(0)
     else:
-        run_request(False) # Deactivate the killing mechanism
+        for h_id in hornet_values["id"]:
+            #print("id:", h_id, ", lenght:", len(hornet_values["coordinates"][h_id-1])) # debug
+            #print(hornet_values["coordinates"][h_id-1]) # debug
+            match len(hornet_values["coordinates"][h_id-1]):
+                # If there are no coordinates in the list, DELETE the list and the id
+                case 0:
+                    delete_ids.append(h_id)
+
+                # If there are 3 coordinates, calculate the angle
+                case 3:
+                    screen_angle = enter_exit_calc(
+                        hornet_values["coordinates"][h_id-1][2],
+                        hornet_values["coordinates"][h_id-1][1],
+                        hornet_values["coordinates"][h_id-1][0]
+                    )
+                    if screen_angle == -1:
+                        print("Error")
+                    else:
+                        print(most_frequent_color(hornet_values["color"][h_id-1])) # debug
+                        print(f"Angle relative to screen: {screen_angle:.2f} degrees") # debug
+                        print(f"Is the hornnet exiting or entering: {hornet_values['enter_or_exit'][h_id-1]}") # debug
+                        #app_send_data(token, location_id, most_frequent_color(hornet_values["color"][h_id-1]), hornet_values['enter_or_exit'][h_id-1], screen_angle)
+
+                        # Switch enter for exit
+                        if hornet_values["enter_or_exit"][h_id-1] == 'enter':
+                            hornet_values["enter_or_exit"][h_id-1] = 'exit'
+                        elif hornet_values["enter_or_exit"][h_id-1] == 'exit':
+                            hornet_values["enter_or_exit"][h_id-1] = 'enter'
+                
+                # If there is more than 5 coordinates, DELETE its oldest coordinates
+                case 6:
+                    # delete coords (.pop(0) deletes to the front of the list)
+                    hornet_values["coordinates"][h_id-1].pop(0)
+                    hornet_values["color"][h_id-1].pop(0)
+
+        #run_request(False) # Deactivate the killing mechanism
         print("no boxes")
         for h_id in hornet_values["id"]:
             hornet_values["coordinates"][h_id-1].pop(0)
@@ -121,9 +156,9 @@ while True:
     hornet_values["id"] = list(range(1, len(hornet_values["coordinates"]) + 1))
 
     # Show the frame with the annotations
-    #cv2.imshow('YOLOv11 Tracking', frame) # debug
+    cv2.imshow('YOLOv11 Tracking', frame) # debug
     #frames.append(frame) # debug
-    #time.sleep(0.1) # debug
+    time.sleep(0.05) # debug
 
     # Press 'q' to stop
     if cv2.waitKey(1) == ord('q'):
@@ -142,4 +177,4 @@ for f in frames:
 video_writer.release()
 """
 cap.release()
-#cv2.destroyAllWindows()
+cv2.destroyAllWindows()
